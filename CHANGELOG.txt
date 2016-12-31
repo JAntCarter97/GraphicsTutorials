@@ -1,0 +1,13 @@
+CHANGE LOG :: BensGraphicsTutorials
+
+Bengine/Properties/Librarian/(debug tab)/Additional Dependencies 
+Deleted: 
+		SDL2.lib
+		SDL2main.lib
+		opengl32.lib
+		glew32.lib
+
+Bengine/Properties/Configuration Properties/VC++ Directories/(debug tab)/Library Directories 
+Deleted:
+		$(SolutionDir)deps/lib/
+		
