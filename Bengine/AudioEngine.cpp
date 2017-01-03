@@ -58,6 +58,12 @@ namespace Bengine {
 		if (m_isInitialized) {
 			m_isInitialized = false;
 
+			// This is the new c++ 11 syntax of foreach
+			// For normal syntax use: 
+			// for (auto it = m_effectMap.begin(); it != m_effectMap.end(); it++)
+			// {
+			//		Mix_FreeChunk(it->second);
+			// }
 			for (auto& it : m_effectMap) {
 				Mix_FreeChunk(it.second);
 			}
@@ -66,11 +72,11 @@ namespace Bengine {
 				Mix_FreeMusic(it.second);
 			}
 
-			m_effectMap.clear();
-			m_musicMap.clear();
+			m_effectMap.clear(); ///< Clears all Elements of effect map
+			m_musicMap.clear(); ///< Clears all Elements of music map
 
-			Mix_CloseAudio();
-			Mix_Quit();
+			Mix_CloseAudio(); ///< Opposite of Mix_OpenAudio()
+			Mix_Quit(); ///< Does not destroy our music maps or effect maps
 		}
 	}
 

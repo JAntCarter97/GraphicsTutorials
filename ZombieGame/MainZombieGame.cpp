@@ -117,9 +117,9 @@ void MainZombieGame::initLevel()
 
 	// Set up the player's guns
 	const float BULLET_SPEED = 20.0f;
-	m_player->addGun(new Gun("Magnum", 40, 1, 0.2f, BULLET_SPEED, 100.0f, m_audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
-	m_player->addGun(new Gun("Shotgun", 40, 10, 0.2f, BULLET_SPEED, 50.0f, m_audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
-	m_player->addGun(new Gun("MP5", 10, 1, 0.2f, BULLET_SPEED, 30.0f, m_audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
+	m_player->addGun(new Gun("Magnum", 40, 1, 0.2f, 100.0f, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
+	m_player->addGun(new Gun("Shotgun", 40, 10, 0.2f, 50.0f, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
+	m_player->addGun(new Gun("MP5", 10, 1, 0.2f, 80.0f, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
 }
 
 // Initialize the shaders
@@ -142,7 +142,7 @@ void MainZombieGame::gameLoop()
 	fpsLimiter.setMaxFPS(60.0f);
 
 	//Scale camera out
-	const float CAMERA_SCALE = 1.0f / 4.0f;
+	const float CAMERA_SCALE = 1.0f / 2.0f;
 	m_camera.setScale(CAMERA_SCALE);
 
 	const float MS_PER_SECOND = 1000;
