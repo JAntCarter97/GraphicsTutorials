@@ -44,6 +44,7 @@ protected:
 	Bengine::ColorRGBA8 _color;
 	float _speed;
 	float _health;
+	GLuint m_textureID;
 
 private:
 

@@ -65,7 +65,7 @@ bool Agent::collideWithAgent(Agent* agent)
 
 void Agent::draw(Bengine::SpriteBatch& _spriteBatch)
 {
-	static int textureID = Bengine::ResourceManager::getTexture("Textures/circle.png").id;
+	//static int textureID = Bengine::ResourceManager::getTexture("Textures/circle.png").id;
 
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -75,7 +75,7 @@ void Agent::draw(Bengine::SpriteBatch& _spriteBatch)
 	destRect.z = AGENT_WIDTH;
 	destRect.w = AGENT_WIDTH;
 
-	_spriteBatch.draw(destRect, uvRect, textureID, 0, _color);
+	_spriteBatch.draw(destRect, uvRect, m_textureID, 0, _color);
 }
 
 bool Agent::applyDamage(float damage)

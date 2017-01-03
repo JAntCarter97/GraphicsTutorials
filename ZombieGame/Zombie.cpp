@@ -1,6 +1,6 @@
 #include "Zombie.h"
-
 #include "Human.h"
+#include <Bengine/ResourceManager.h>
 
 
 Zombie::Zombie()
@@ -21,7 +21,8 @@ void Zombie::init(float speed, glm::vec2 pos)
 
 	_health = 150.0f;
 
-	_color = Bengine::ColorRGBA8(20, 100, 10, 255);
+	_color = Bengine::ColorRGBA8(255, 255, 255, 255);
+	m_textureID = Bengine::ResourceManager::getTexture("Textures/zombie.png").id;
 
 }
 

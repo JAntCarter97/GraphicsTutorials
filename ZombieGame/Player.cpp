@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <SDL/SDL.h>
 #include "Gun.h"
+#include <Bengine/ResourceManager.h>
 
 Player::Player()
 	: _currentGunIndex(-1)
@@ -24,10 +25,8 @@ void Player::init(float speed, glm::vec2 pos, Bengine::InputManager* inputManage
 
 	_health = 150.0f;
 
-	_color.r = 0;
-	_color.g = 0;
-	_color.b = 185;
-	_color.a = 255;
+	_color = Bengine::ColorRGBA8(255, 255, 255, 255);
+	m_textureID = Bengine::ResourceManager::getTexture("Textures/player.png").id;
 }
 
 void Player::addGun(Gun* gun)
