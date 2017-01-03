@@ -13,6 +13,8 @@
 #include <Bengine/SpriteBatch.h>
 #include <Bengine/SpriteFont.h>
 #include <Bengine/AudioEngine.h>
+#include <Bengine/ParticleEngine2D.h>
+#include <Bengine/ParticleBatch2D.h>
 
 // File Includes
 #include "Level.h"
@@ -66,6 +68,9 @@ private:
 	// Draws the HUD
 	void drawHud();
 
+	// Draws the Blood particles
+	void addBlood(const glm::vec2& position, int numParticles);
+
 	// Member Variables
 	Bengine::Window m_window; ///< The game window
 
@@ -78,6 +83,9 @@ private:
 
 	Bengine::SpriteBatch m_agentSpriteBatch; ///< Draws all agents
 	Bengine::SpriteBatch m_hudSpriteBatch;
+	
+	Bengine::ParticleEngine2D m_particleEngine;
+	Bengine::ParticleBatch2D* m_bloodParticleBatch;
 
 	std::vector<Level*> m_levels; ///< Vector of all levels
 

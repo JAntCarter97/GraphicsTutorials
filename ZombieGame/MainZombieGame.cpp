@@ -2,8 +2,10 @@
 #include <iostream>
 #include <random>
 #include <ctime>
+#include <glm/gtx/rotate_vector.hpp>
 #include <Bengine/Timing.h>
 #include <Bengine/BengineErrors.h>
+#include <Bengine/ResourceManager.h>
 #include <algorithm>
 #include "Zombie.h"
 #include "Gun.h"
@@ -79,6 +81,11 @@ void MainZombieGame::initSystems()
 	m_camera.init(m_screenWidth, m_screenHeight);
 	m_hudCamera.init(m_screenWidth, m_screenHeight);
 	m_hudCamera.setPosition(glm::vec2(m_screenWidth / 2, m_screenHeight / 2));
+
+	// Initialize Particles
+	m_bloodParticleBatch = new Bengine::ParticleBatch2D;
+	m_bloodParticleBatch->init(1000, 0.01f, Bengine::ResourceManager::getTexture("Textures/particle.png"));
+	m_particleEngine.addParicleBatch(m_bloodParticleBatch);
 
 }
 
@@ -175,9 +182,12 @@ void MainZombieGame::gameLoop()
 			updateAgents(deltaTime);
 			// Update Bullets
 			updateBullets(deltaTime);
+			// Update particles
+			m_particleEngine.update(deltaTime);
 			i++;
 		}
 
+		// Make sure the camera is bound to the player position
 		m_camera.setPosition(m_player->getPosition());
 
 		m_camera.update();
@@ -275,6 +285,8 @@ void MainZombieGame::updateBullets(float deltaTime)
 			// Check collision
 			if (m_bullets[i].collideWithAgent(m_zombies[j]))
 			{
+				// Add Blood
+				addBlood(m_bullets[i].getPosition(), 5);
 
 				// Damage zombie, and kill it if it's out of health
 				if (m_zombies[j]->applyDamage(m_bullets[i].getDamage()))
@@ -295,6 +307,7 @@ void MainZombieGame::updateBullets(float deltaTime)
 				m_bullets.pop_back();
 				wasBulletRemoved = true;
 				i--; // Make sure we don't skip a bullet
+
 				// since the bullet died, no need to loop through any more zombies
 				break;
 			}
@@ -311,6 +324,9 @@ void MainZombieGame::updateBullets(float deltaTime)
 				// Check collision
 				if (m_bullets[i].collideWithAgent(m_humans[j]))
 				{
+
+					// Add Blood
+					addBlood(m_bullets[i].getPosition(), 20);
 
 					// Damage human, and kill it if it's out of health
 					if (m_humans[j]->applyDamage(m_bullets[i].getDamage()))
@@ -331,7 +347,8 @@ void MainZombieGame::updateBullets(float deltaTime)
 					m_bullets.pop_back();
 					wasBulletRemoved = true;
 					i--; // Make sure we don't skip a bullet
-						 // since the bullet died, no need to loop through any more zombies
+
+					// since the bullet died, no need to loop through any more humans
 					break;
 				}
 				else
@@ -450,6 +467,9 @@ void MainZombieGame::drawGame()
 
 	m_agentSpriteBatch.renderBatch();
 
+	// Render the particles
+	m_particleEngine.draw(&m_agentSpriteBatch);
+
 	// Render the HUD
 	drawHud();
 	
@@ -482,4 +502,18 @@ void MainZombieGame::drawHud()
 	m_hudSpriteBatch.end();
 
 	m_hudSpriteBatch.renderBatch();
+}
+
+void MainZombieGame::addBlood(const glm::vec2& position, int numParticles)
+{
+	static std::mt19937 randEngine(time(nullptr));
+	static std::uniform_real_distribution<float> randAngle(0.0f, 360.0f);
+
+	glm::vec2 vel(3.0f, 0.0f);
+	Bengine::ColorRGBA8 col(255, 0, 0, 255);
+
+	for (int i = 0; i < numParticles; i++)
+	{
+		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, 15.0f);
+	}
 }
