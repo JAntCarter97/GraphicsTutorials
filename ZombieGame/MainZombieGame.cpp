@@ -10,9 +10,14 @@
 #include "Zombie.h"
 #include "Gun.h"
 
+// GLOBAL CONSTANTS::
 const float HUMAN_SPEED = 0.5f;
 const float ZOMBIE_SPEED = 1.0f;
 const float PLAYER_SPEED = 2.0f;
+
+// FUNCTIONS
+
+// IMPLEMENTATIONS
 
 MainZombieGame::MainZombieGame() : m_screenWidth(1024),
 								   m_screenHeight(768),
@@ -82,9 +87,16 @@ void MainZombieGame::initSystems()
 	m_hudCamera.init(m_screenWidth, m_screenHeight);
 	m_hudCamera.setPosition(glm::vec2(m_screenWidth / 2, m_screenHeight / 2));
 
-	// Initialize Particles
+	// Initialize Particles w/ a lamda for init @params #4
 	m_bloodParticleBatch = new Bengine::ParticleBatch2D;
-	m_bloodParticleBatch->init(1000, 0.01f, Bengine::ResourceManager::getTexture("Textures/particle.png"));
+	m_bloodParticleBatch->init(1000, 
+							   0.01f, 
+							   Bengine::ResourceManager::getTexture("Textures/particle.png"), 
+							   [](Bengine::Particle2D& particle, float deltaTime)
+							   {
+									particle.position += particle.velocity * deltaTime;
+									particle.color.a = (GLubyte)(particle.life * 255.0f);
+							   });
 	m_particleEngine.addParicleBatch(m_bloodParticleBatch);
 
 }
@@ -509,11 +521,11 @@ void MainZombieGame::addBlood(const glm::vec2& position, int numParticles)
 	static std::mt19937 randEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randAngle(0.0f, 360.0f);
 
-	glm::vec2 vel(3.0f, 0.0f);
+	glm::vec2 vel(1.0f, 0.0f);
 	Bengine::ColorRGBA8 col(255, 0, 0, 255);
 
 	for (int i = 0; i < numParticles; i++)
 	{
-		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, 15.0f);
+		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, 10.0f);
 	}
 }

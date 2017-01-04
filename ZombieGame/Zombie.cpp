@@ -32,8 +32,8 @@ void Zombie::update(const std::vector<std::string>& levelData, std::vector<Human
 
 	if (closestHuman != nullptr)
 	{
-		glm::vec2 direction = glm::normalize(closestHuman->getPosition() - _position);
-		_position += direction * _speed * deltaTime;
+		m_direction = glm::normalize(closestHuman->getPosition() - _position);
+		_position += m_direction * _speed * deltaTime;
 	}
 
 	collideWithLevel(levelData);
