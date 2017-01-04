@@ -72,7 +72,7 @@ void MainZombieGame::initSystems()
 	// Initialize sound , must happen after Bengine::init
 	m_audioEngine.init();
 
-	m_window.create("Zombie In Your Pooper", m_screenWidth, m_screenHeight, 0);
+	m_window.create("Zombie Overrun", m_screenWidth, m_screenHeight, 0);
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 	initShaders();
